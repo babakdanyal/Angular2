@@ -18,12 +18,14 @@ class Calculator {
     operand_b: string;
     operator: string;
     result: string;
+    decimalFlag: boolean;
     
     constructor() {
         this.operand_a = '0';
         this.operand_b = '0';
         this.operator = '';
         this.result = '0';
+        this.decimalFlag = false;
     }
     assignOperand(temp: string)
     {
@@ -34,16 +36,27 @@ class Calculator {
         {
             this.operand_b = "";
         }
-        if(this.operator == "")
-            this.operand_a += temp;
+        
+        if (this.operator == "")
+        {
+            if(temp != "." || (!this.decimalFlag))
+                this.operand_a += temp;
+        }
         else
-            this.operand_b += temp;
+        {
+            if (temp != "." || (!this.decimalFlag))
+                this.operand_b += temp;
+        }
+
+        if (temp == ".")
+            this.decimalFlag = true;
 
         this.display();
     }
     assignOperator(temp: string)
     {
         this.operator = temp;
+        this.decimalFlag = false;
         this.display();
     }
     clear()
@@ -52,17 +65,36 @@ class Calculator {
         this.operand_b = '0';
         this.operator = '';
         this.result = '0';
+        this.decimalFlag = false;
     }
     evaluate()
     {
-        this.result = eval(parseFloat(this.operand_a) +this.operator+ parseFloat(this.operand_b));
-        this.operand_a = '0';
-        this.operand_b = '0';
-        this.operator = '';
+        if (this.operator == "^")
+            this.power();
+        else
+            this.result = eval(parseFloat(this.operand_a) + this.operator + parseFloat(this.operand_b));
+        
+        this.clearVarOnly();
     }
     display()
     {
         this.result = this.operand_a + this.operator + this.operand_b;
+    }
+    sqrt()
+    {
+        this.result = Math.sqrt(parseFloat(this.operand_a)).toString();
+        this.clearVarOnly();
+    }
+    power() {
+        this.result = Math.pow(parseFloat(this.operand_a), parseFloat(this.operand_b)).toString();
+        this.clearVarOnly();
+    }
+    clearVarOnly()
+    {
+        this.operand_a = '0';
+        this.operand_b = '0';
+        this.operator = '';
+        this.decimalFlag = false;
     }
 }
 bootstrap(Calculator);

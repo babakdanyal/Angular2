@@ -23,6 +23,7 @@ System.register(["angular2/angular2"], function(exports_1, context_1) {
                     this.operand_b = '0';
                     this.operator = '';
                     this.result = '0';
+                    this.decimalFlag = false;
                 }
                 Calculator.prototype.assignOperand = function (temp) {
                     if (this.operand_a == "0") {
@@ -31,14 +32,21 @@ System.register(["angular2/angular2"], function(exports_1, context_1) {
                     if (this.operand_b == "0") {
                         this.operand_b = "";
                     }
-                    if (this.operator == "")
-                        this.operand_a += temp;
-                    else
-                        this.operand_b += temp;
+                    if (this.operator == "") {
+                        if (temp != "." || (!this.decimalFlag))
+                            this.operand_a += temp;
+                    }
+                    else {
+                        if (temp != "." || (!this.decimalFlag))
+                            this.operand_b += temp;
+                    }
+                    if (temp == ".")
+                        this.decimalFlag = true;
                     this.display();
                 };
                 Calculator.prototype.assignOperator = function (temp) {
                     this.operator = temp;
+                    this.decimalFlag = false;
                     this.display();
                 };
                 Calculator.prototype.clear = function () {
@@ -46,15 +54,31 @@ System.register(["angular2/angular2"], function(exports_1, context_1) {
                     this.operand_b = '0';
                     this.operator = '';
                     this.result = '0';
+                    this.decimalFlag = false;
                 };
                 Calculator.prototype.evaluate = function () {
-                    this.result = eval(parseFloat(this.operand_a) + this.operator + parseFloat(this.operand_b));
-                    this.operand_a = '0';
-                    this.operand_b = '0';
-                    this.operator = '';
+                    if (this.operator == "^")
+                        this.power();
+                    else
+                        this.result = eval(parseFloat(this.operand_a) + this.operator + parseFloat(this.operand_b));
+                    this.clearVarOnly();
                 };
                 Calculator.prototype.display = function () {
                     this.result = this.operand_a + this.operator + this.operand_b;
+                };
+                Calculator.prototype.sqrt = function () {
+                    this.result = Math.sqrt(parseFloat(this.operand_a)).toString();
+                    this.clearVarOnly();
+                };
+                Calculator.prototype.power = function () {
+                    this.result = Math.pow(parseFloat(this.operand_a), parseFloat(this.operand_b)).toString();
+                    this.clearVarOnly();
+                };
+                Calculator.prototype.clearVarOnly = function () {
+                    this.operand_a = '0';
+                    this.operand_b = '0';
+                    this.operator = '';
+                    this.decimalFlag = false;
                 };
                 Calculator = __decorate([
                     angular2_1.Component({

@@ -2,10 +2,15 @@
     <div id="calculator">
         <!-- Screen and clear key -->
         <div class="top">
-            <span (click)="clear()" class="clear">C</span>
+            <!--<span (click)="clear()" class="clear">C</span>-->
             <div class="screen">{{result}}</div>
         </div>
-
+        <div class="top">
+            <span (click)="clear()" class="clear">C</span>
+            <span (click)="sqrt()" class="clear">sqrt</span>
+            <span (click)="assignOperator('^')" class="clear">^</span>
+            <!--<div class="screen">{{result}}</div>-->
+        </div>
         <div class="keys">
             <!-- operators and other keys -->
             <span (click)="assignOperand(7)">7</span>
